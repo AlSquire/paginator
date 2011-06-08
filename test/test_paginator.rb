@@ -125,6 +125,10 @@ class PaginatorTest < Test::Unit::TestCase
     assert_equal 11, page.last_item_number    
   end
 
+  # Was broken with ruby 1.8.7 because of Enumerable#first
+  def test_page_object_delegate_first_method
+    assert_equal @pager.first, @pager.page(1).first
+  end
 end
 
 class PaginatorTestWithMathN < PaginatorTest

@@ -70,6 +70,9 @@ class Paginator
     include Enumerable
         
     attr_reader :number, :pager
+
+    extend Forwardable
+    def_delegators :@pager, :page, :first, :last, :number_of_pages, :per_page, :count
     
     def initialize(pager, number, select) #:nodoc:
       @pager, @number = pager, number
@@ -128,14 +131,6 @@ class Paginator
     
     def each(&block)
       items.each(&block)
-    end
-    
-    def method_missing(meth, *args, &block) #:nodoc:
-      if @pager.respond_to?(meth)
-        @pager.__send__(meth, *args, &block)
-      else
-        super
-      end
     end
     
   end
